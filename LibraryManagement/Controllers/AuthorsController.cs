@@ -52,4 +52,10 @@ public class AuthorsController : ControllerBase
 
         return Ok(responses);
     }
+    [HttpGet("getbyid")]
+    public IActionResult GetById(int id)
+    {
+        Author author = dbContext.Authors.SingleOrDefault(x => x.Id == id);
+        return Ok(author);
+    }
 }
