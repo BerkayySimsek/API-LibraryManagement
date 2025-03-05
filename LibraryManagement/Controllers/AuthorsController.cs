@@ -1,4 +1,6 @@
 ﻿using LibraryManagement.DataAccess;
+using LibraryManagement.DataAccess.Abstracts;
+using LibraryManagement.DataAccess.Concretes;
 using LibraryManagement.Models;
 using LibraryManagement.Models.Dtos.Authors;
 using Microsoft.AspNetCore.Http;
@@ -11,7 +13,7 @@ namespace LibraryManagement.Controllers;
 [ApiController]
 public class AuthorsController : ControllerBase
 {
-    private BaseDbContext dbContext = new BaseDbContext();
+    IAuthorRepository authorRepository = new AuthorRepository();
 
     [HttpPost("add")]
     public IActionResult Add(AuthorAddRequestDto dto)
@@ -23,8 +25,7 @@ public class AuthorsController : ControllerBase
             SurName = dto.SurName,
             BirthDate = birthDate,
         };
-        dbContext.Authors.Add(author);
-        dbContext.SaveChanges();
+        authorRepository.Add(author);
 
         return Ok("Yazar Eklendi.");
     }
@@ -32,7 +33,7 @@ public class AuthorsController : ControllerBase
     [HttpGet("getall")]
     public IActionResult GetAll()
     {
-        List<Author> authors = dbContext.Authors.ToList();
+        List<Author> authors = authorRepository.GetAll();
 
         List<AuthorResponseDto> responses = new List<AuthorResponseDto>();
 
@@ -55,7 +56,7 @@ public class AuthorsController : ControllerBase
     [HttpGet("getbyid")]
     public IActionResult GetById(int id)
     {
-        Author author = dbContext.Authors.SingleOrDefault(x => x.Id == id);
+        Author author= authorRepository.GetById(id);
         return Ok(author);
     }
 }
