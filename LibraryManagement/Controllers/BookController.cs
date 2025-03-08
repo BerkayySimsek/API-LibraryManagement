@@ -2,6 +2,9 @@
 using LibraryManagement.DataAccess.Abstracts;
 using LibraryManagement.DataAccess.Concretes;
 using LibraryManagement.Models;
+using LibraryManagement.Models.Dtos.Books;
+using LibraryManagement.Services.Abstracts;
+using LibraryManagement.Services.Concretes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,18 +16,17 @@ public class BookController : ControllerBase
 {
     // http://localhost:5271/api/Book/add
 
-    IBookRepository bookRepository = new BookRepository();
+    IBookService bookService = new BookService();
 
     // HttpGet  : Kaynaktan veri okuma işlemleri için kullanılır.
     // HttpPost : Kaynağa veri ekleme, silme, güncelleme işlemleri için kullanılır.
 
     [HttpPost("add")]
-    public IActionResult Add(Book book)
+    public IActionResult Add(BookAddRequestDto dto)
     {
         // INSERT INTO BOOKS() VALUES();
 
-        bookRepository.Add(book);
-
+        bookService.Add(dto);
         return Ok("Başarıyla eklendi.");
     }
 
@@ -33,7 +35,7 @@ public class BookController : ControllerBase
     {
         // SELECT * FROM Books
 
-        List<Book> books = bookRepository.GetAll();
+        List<BookResponseDto> books = bookService.GetAll();
 
         return Ok(books);
     }
@@ -47,10 +49,16 @@ public class BookController : ControllerBase
 
         // Book book = context.Books.Find(id);
 
-        Book book = bookRepository.GetById(id);
+        BookResponseDto book = bookService.GetById(id);
 
         // Book book = context.Books.Where(x => x.Id == id).SingleOrDefault();
 
         return Ok(book);
+    }
+    [HttpDelete("delete")]
+    public IActionResult DeleteById(int id)
+    {
+        bookService.Delete(id);
+        return Ok("Başarıyla silindi.");
     }
 }

@@ -1,5 +1,6 @@
 ﻿using LibraryManagement.DataAccess.Abstracts;
 using LibraryManagement.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagement.DataAccess.Concretes;
 
@@ -15,7 +16,7 @@ public class BookRepository : IBookRepository
 
     public void Add(Book book)
     {
-        context.Books.Add(book);
+        context.Entry(book).State = EntityState.Added;
         context.SaveChanges();
     }
 
@@ -27,7 +28,7 @@ public class BookRepository : IBookRepository
 
     public List<Book> GetAll()
     {
-        List<Book> books = context.Books.ToList();
+        List<Book> books = context.Books.Include(x => x.Category).Include(z => z.Author).ToList();
         return books;
     }
 
@@ -39,7 +40,7 @@ public class BookRepository : IBookRepository
 
     public Book? GetById(int id)
     {
-        Book? book = context.Books.Find(id);
+        Book? book = context.Books.Include(x => x.Category).Include(z => z.Author).SingleOrDefault(X => X.Id == id);
         return book;
     }
 

@@ -56,7 +56,7 @@ public class AuthorsController : ControllerBase
     [HttpGet("getbyid")]
     public IActionResult GetById(int id)
     {
-        Author author= authorRepository.GetById(id);
-        return Ok(author);
+        Author authors = authorRepository.GetById(id);
+        return Ok(authors);
     }
 }
