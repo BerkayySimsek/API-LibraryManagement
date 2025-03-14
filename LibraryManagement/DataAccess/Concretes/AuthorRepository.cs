@@ -6,34 +6,38 @@ namespace LibraryManagement.DataAccess.Concretes
 {
     public class AuthorRepository : IAuthorRepository
     {
-        BaseDbContext context = new BaseDbContext();
+        private BaseDbContext _context;
+        public AuthorRepository(BaseDbContext context)
+        {
+            _context = context;
+        }
 
         public void Add(Author author)
         {
-            context.Authors.Add(author);
-            context.SaveChanges();
+            _context.Authors.Add(author);
+            _context.SaveChanges();
         }
 
         public void Delete(Author author)
         {
-            context.Authors.Remove(author);
-            context.SaveChanges();
+            _context.Authors.Remove(author);
+            _context.SaveChanges();
         }
 
         public List<Author> GetAll()
         {
-            return context.Authors.ToList();
+            return _context.Authors.ToList();
         }
 
         public Author? GetById(int id)
         {
-            return context.Authors.Find(id);
+            return _context.Authors.Find(id);
         }
 
         public void Update(Author author)
         {
-            context.Authors.Update(author);
-            context.SaveChanges();
+            _context.Authors.Update(author);
+            _context.SaveChanges();
         }
     }
 }

@@ -8,29 +8,33 @@ namespace LibraryManagement.Services.Concretes;
 
 public class AuthorService : IAuthorService
 {
-    IAuthorRepository authorRepository = new AuthorRepository();
+    private IAuthorRepository _authorRepository;
+    public AuthorService(IAuthorRepository authorRepository)
+    {
+        _authorRepository = authorRepository;
+    }
     public void Add(AuthorAddRequestDto dto)
     {
         Author author = ConvertToAuthor(dto);
-        authorRepository.Add(author);
+        _authorRepository.Add(author);
     }
 
     public void Delete(int id)
     {
-        Author author = authorRepository.GetById(id);
-        authorRepository.Delete(author);
+        Author author = _authorRepository.GetById(id);
+        _authorRepository.Delete(author);
     }
 
     public List<AuthorResponseDto> GetAll()
     {
-        List<Author> authors = authorRepository.GetAll();
+        List<Author> authors = _authorRepository.GetAll();
         List<AuthorResponseDto> responses = ConvertToResponseDtoList(authors);
         return responses;
     }
 
     public AuthorResponseDto? GetById(int id)
     {
-        Author author = authorRepository.GetById(id);
+        Author author = _authorRepository.GetById(id);
         AuthorResponseDto response = ConvertToResponseDto(author);
         return response;
     }

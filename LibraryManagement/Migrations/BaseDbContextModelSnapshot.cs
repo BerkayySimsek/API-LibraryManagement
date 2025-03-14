@@ -95,6 +95,26 @@ namespace LibraryManagement.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("LibraryManagement.Models.User", b =>
+                {
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("id");
+
+                    b.ToTable("Users");
+                });
+
             modelBuilder.Entity("LibraryManagement.Models.Book", b =>
                 {
                     b.HasOne("LibraryManagement.Models.Author", "Author")

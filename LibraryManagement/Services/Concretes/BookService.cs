@@ -8,29 +8,33 @@ namespace LibraryManagement.Services.Concretes;
 
 public class BookService : IBookService
 {
-    IBookRepository bookRepository = new BookRepository();
+    private IBookRepository _bookRepository;
+    public BookService(IBookRepository bookRepository)
+    {
+        _bookRepository = bookRepository;
+    }
     public void Add(BookAddRequestDto dto)
     {
         Book book = ConvertToTable(dto);
-        bookRepository.Add(book);
+        _bookRepository.Add(book);
     }
 
     public void Delete(int id)
     {
-        Book book = bookRepository.GetById(id);
-        bookRepository.Delete(book);
+        Book book = _bookRepository.GetById(id);
+        _bookRepository.Delete(book);
     }
 
     public List<BookResponseDto> GetAll()
     {
-        List<Book> books = bookRepository.GetAll();
+        List<Book> books = _bookRepository.GetAll();
         List<BookResponseDto> responses = ConvertToResponseDtoList(books);
         return responses;
     }
 
     public BookResponseDto? GetById(int id)
     {
-        Book book = bookRepository.GetById(id);
+        Book book = _bookRepository.GetById(id);
         BookResponseDto dto = ConvertToResponseDto(book);
         return dto;
     }

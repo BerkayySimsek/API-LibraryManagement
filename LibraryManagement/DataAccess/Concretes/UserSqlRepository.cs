@@ -4,38 +4,38 @@ using LibraryManagement.Models;
 
 namespace LibraryManagement.DataAccess.Concretes;
 
-public class UserRepository : IUserRepository
+public class UserSqlRepository : IUserRepository
 {
-    private MongoDbContext context;
-    public UserRepository(MongoDbContext context)
+    private BaseDbContext _context;
+    public UserSqlRepository(BaseDbContext context)
     {
-        this.context = context;
+        _context = context;
     }
     public void Add(User user)
     {
-        context.Add(user);
-        context.SaveChanges();
+        _context.Add(user);
+        _context.SaveChanges();
     }
 
     public void Delete(User user)
     {
-        context.Users.Remove(user);
-        context.SaveChanges();
+        _context.Users.Remove(user);
+        _context.SaveChanges();
     }
 
     public List<User> GetAll()
     {
-        return context.Users.ToList();
+        return _context.Users.ToList();
     }
 
     public User GetByEmail(string email)
     {
-        User user = context.Users.SingleOrDefault(x => x.Email == email);
+        User user = _context.Users.SingleOrDefault(x => x.Email == email);
         return user;
     }
 
     public User GetById(Guid id)
     {
-        return context.Users.Find(id);
+        return _context.Users.Find(id);
     }
 }

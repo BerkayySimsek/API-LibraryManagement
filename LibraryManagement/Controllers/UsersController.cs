@@ -1,9 +1,12 @@
-﻿using LibraryManagement.DataAccess.Abstracts;
+﻿
+using LibraryManagement.DataAccess.Abstracts;
 using LibraryManagement.DataAccess.Concretes;
 using LibraryManagement.Models;
-using Microsoft.AspNetCore.Http;
+using LibraryManagement.Models.Dtos.Users;
+using LibraryManagement.Services.Abstracts;
+using LibraryManagement.Services.Concretes;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+
 
 
 namespace LibraryManagement.Controllers;
@@ -12,27 +15,37 @@ namespace LibraryManagement.Controllers;
 [ApiController]
 public class UsersController : ControllerBase
 {
-    IUserRepository userRepository = new UserRepository();
+    private IUserService _userService;
+    public UsersController(IUserService userService)
+    {
+        _userService = userService;
+    }
+
 
     [HttpPost("add")]
-    public IActionResult Add(User user)
+    public IActionResult Add(UserAddRequestDto user)
     {
-        userRepository.Add(user);
+        _userService.Add(user);
         return Ok("Kullanıcı eklendi.");
     }
 
     [HttpGet("getbyid")]
     public IActionResult GetById(string id)
     {
-        Guid newId = Guid.Parse(id);
-        User user=userRepository.GetById(newId);
-        return Ok(user);
+        UserResponseDto userResponseDto = _userService.GetById(id);
+        return Ok(userResponseDto);
     }
 
     [HttpGet("getall")]
     public IActionResult GetAll()
     {
-        List<User> users = userRepository.GetAll();
-        return Ok(users);
+        return Ok(_userService.GetAll());
+    }
+
+    [HttpGet("getbyemail")]
+    public IActionResult GetByEmail(string email)
+    {
+        UserResponseDto userResponseDto = _userService.GetByEmail(email);
+        return Ok(userResponseDto);
     }
 }

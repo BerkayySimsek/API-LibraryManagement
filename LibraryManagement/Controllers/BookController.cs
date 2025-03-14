@@ -16,7 +16,11 @@ public class BookController : ControllerBase
 {
     // http://localhost:5271/api/Book/add
 
-    IBookService bookService = new BookService();
+    private IBookService _bookService;
+    public BookController(IBookService bookService)
+    {
+        _bookService = bookService;
+    }
 
     // HttpGet  : Kaynaktan veri okuma işlemleri için kullanılır.
     // HttpPost : Kaynağa veri ekleme, silme, güncelleme işlemleri için kullanılır.
@@ -26,7 +30,7 @@ public class BookController : ControllerBase
     {
         // INSERT INTO BOOKS() VALUES();
 
-        bookService.Add(dto);
+        _bookService.Add(dto);
         return Ok("Başarıyla eklendi.");
     }
 
@@ -35,7 +39,7 @@ public class BookController : ControllerBase
     {
         // SELECT * FROM Books
 
-        List<BookResponseDto> books = bookService.GetAll();
+        List<BookResponseDto> books = _bookService.GetAll();
 
         return Ok(books);
     }
@@ -49,7 +53,7 @@ public class BookController : ControllerBase
 
         // Book book = context.Books.Find(id);
 
-        BookResponseDto book = bookService.GetById(id);
+        BookResponseDto book = _bookService.GetById(id);
 
         // Book book = context.Books.Where(x => x.Id == id).SingleOrDefault();
 
@@ -58,7 +62,7 @@ public class BookController : ControllerBase
     [HttpDelete("delete")]
     public IActionResult DeleteById(int id)
     {
-        bookService.Delete(id);
+        _bookService.Delete(id);
         return Ok("Başarıyla silindi.");
     }
 }

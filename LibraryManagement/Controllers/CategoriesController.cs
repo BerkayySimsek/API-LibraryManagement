@@ -14,31 +14,34 @@ namespace LibraryManagement.Controllers
     [ApiController]
     public class CategoriesController : ControllerBase
     {
-        ICategoryService categoryService = new CategoryService();
-        ICategoryRepository categoryRepository = new CategoryRepository();
+        private ICategoryService _categoryService;
+        public CategoriesController(ICategoryService categoryService)
+        {
+            _categoryService = categoryService;
+        }
 
         [HttpPost("add")]
         public IActionResult Add(CategoryAddRequestDto dto)
         {
-            categoryService.Add(dto);
+            _categoryService.Add(dto);
             return Ok("Kategori eklendi.");
         }
 
         [HttpGet("getall")]
         public IActionResult GetAll()
-        {
-            return Ok(categoryService.GetAll());
+        {List<CategoryResponseDto> categories = _categoryService.GetAll();  
+            return Ok(categories);
         }
 
         [HttpGet("getbyid")]
-        public IActionResult Get(int id)
+        public IActionResult GetById(int id)
         {
-            return Ok(categoryService.GetById(id));
+            return Ok(_categoryService.GetById(id));
         }
         [HttpDelete("delete")]
         public IActionResult Delete(int id)
         {
-            categoryService.Delete(id);
+            _categoryService.Delete(id);
             return Ok("Kategori Silindi.");
         }
     }
