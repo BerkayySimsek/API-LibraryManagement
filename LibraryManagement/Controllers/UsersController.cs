@@ -1,6 +1,7 @@
 ﻿
 using LibraryManagement.DataAccess.Abstracts;
 using LibraryManagement.DataAccess.Concretes;
+using LibraryManagement.Exceptions.Type;
 using LibraryManagement.Models;
 using LibraryManagement.Models.Dtos.Users;
 using LibraryManagement.Services.Abstracts;
@@ -32,8 +33,15 @@ public class UsersController : ControllerBase
     [HttpGet("getbyid")]
     public IActionResult GetById(string id)
     {
-        UserResponseDto userResponseDto = _userService.GetById(id);
-        return Ok(userResponseDto);
+        try
+        {
+            UserResponseDto userResponseDto = _userService.GetById(id);
+            return Ok(userResponseDto);
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }   
     }
 
     [HttpGet("getall")]

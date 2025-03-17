@@ -1,6 +1,7 @@
 ﻿using LibraryManagement.DataAccess;
 using LibraryManagement.DataAccess.Abstracts;
 using LibraryManagement.DataAccess.Concretes;
+using LibraryManagement.Exceptions.Type;
 using LibraryManagement.Models;
 using LibraryManagement.Models.Dtos.Books;
 using LibraryManagement.Services.Abstracts;
@@ -28,10 +29,20 @@ public class BookController : ControllerBase
     [HttpPost("add")]
     public IActionResult Add(BookAddRequestDto dto)
     {
-        // INSERT INTO BOOKS() VALUES();
+        try
+        {
+            _bookService.Add(dto);
+            return Ok("Başarıyla eklendi.");
+        }
+        catch (BusinessException ex)
+        {
 
-        _bookService.Add(dto);
-        return Ok("Başarıyla eklendi.");
+            return BadRequest(ex.Message);
+        }
+        catch (ValidationException ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpGet("getall")]
@@ -47,17 +58,17 @@ public class BookController : ControllerBase
     [HttpGet("getbyid")]
     public IActionResult GetById(int id)
     {
-        // SELECT * FROM Books WHERE Id = 1
+        try
+        {
+            // Book book = context.Books.Where(x => x.Id == id).SingleOrDefault();
 
-        // Book book = context.Books.FirstOrDefault(x => x.Id == id);
-
-        // Book book = context.Books.Find(id);
-
-        BookResponseDto book = _bookService.GetById(id);
-
-        // Book book = context.Books.Where(x => x.Id == id).SingleOrDefault();
-
-        return Ok(book);
+            BookResponseDto book = _bookService.GetById(id);
+            return Ok(book);
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
     [HttpDelete("delete")]
     public IActionResult DeleteById(int id)

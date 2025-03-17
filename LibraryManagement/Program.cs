@@ -2,6 +2,7 @@ using LibraryManagement.DataAccess.Abstracts;
 using LibraryManagement.DataAccess.Concretes;
 using LibraryManagement.DataAccess.Contexts;
 using LibraryManagement.Services.Abstracts;
+using LibraryManagement.Services.BusinessRules;
 using LibraryManagement.Services.Concretes;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -35,6 +36,8 @@ builder.Services.AddScoped<IAuthorService, AuthorService>();
 
 builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<IBookService, BookService>();
+
+builder.Services.AddScoped<BookBusinessRules>();
 
 var app = builder.Build();
 

@@ -25,6 +25,16 @@ public class BookRepository : IBookRepository
         _context.SaveChanges();
     }
 
+    public int CountByIsbn(string isbn)
+    {
+        return _context.Books.Count(x => x.Isbn == isbn);
+    }
+
+    public int CountByTitle(string title)
+    {
+        return _context.Books.Count(x => x.Title == title);
+    }
+
     public void Delete(Book book)
     {
         _context.Books.Remove(book);
@@ -55,9 +65,21 @@ public class BookRepository : IBookRepository
         return book;
     }
 
+    public bool IsPresentByIsbn(string isbn)
+    {
+        return _context.Books.Any(x => x.Isbn == isbn);
+    }
+
+    public bool IsPresentByTitle(string title)
+    {
+        return _context.Books.Any(x => x.Title == title);
+    }
+
     public void Update(Book book)
     {
         _context.Books.Update(book);
         _context.SaveChanges();
     }
+
+
 }

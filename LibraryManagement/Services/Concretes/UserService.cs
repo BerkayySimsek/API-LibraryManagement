@@ -1,5 +1,6 @@
 ﻿using LibraryManagement.DataAccess.Abstracts;
 using LibraryManagement.DataAccess.Concretes;
+using LibraryManagement.Exceptions.Type;
 using LibraryManagement.Models;
 using LibraryManagement.Models.Dtos.Users;
 using LibraryManagement.Services.Abstracts;
@@ -38,8 +39,13 @@ namespace LibraryManagement.Services.Concretes
 
         public UserResponseDto? GetById(string id)
         {
+
             Guid convertId = new Guid(id);
             User user = _userRepository.GetById(convertId);
+            if (user is null)
+            {
+                throw new NotFoundException("İlgili kitap bulunamadı.");
+            }
             UserResponseDto response = ConvertToUserResponseDto(user);
             return response;
         }
