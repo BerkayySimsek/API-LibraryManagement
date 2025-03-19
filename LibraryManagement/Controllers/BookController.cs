@@ -29,20 +29,8 @@ public class BookController : ControllerBase
     [HttpPost("add")]
     public IActionResult Add(BookAddRequestDto dto)
     {
-        try
-        {
             _bookService.Add(dto);
             return Ok("Başarıyla eklendi.");
-        }
-        catch (BusinessException ex)
-        {
-
-            return BadRequest(ex.Message);
-        }
-        catch (ValidationException ex)
-        {
-            return BadRequest(ex.Message);
-        }
     }
 
     [HttpGet("getall")]
@@ -58,17 +46,12 @@ public class BookController : ControllerBase
     [HttpGet("getbyid")]
     public IActionResult GetById(int id)
     {
-        try
-        {
+             
             // Book book = context.Books.Where(x => x.Id == id).SingleOrDefault();
 
             BookResponseDto book = _bookService.GetById(id);
             return Ok(book);
-        }
-        catch (NotFoundException ex)
-        {
-            return NotFound(ex.Message);
-        }
+        
     }
     [HttpDelete("delete")]
     public IActionResult DeleteById(int id)
