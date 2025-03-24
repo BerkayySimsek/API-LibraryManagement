@@ -44,7 +44,7 @@ namespace LibraryManagement.Services.Concretes
             User user = _userRepository.GetById(convertId);
             if (user is null)
             {
-                throw new NotFoundException("İlgili kitap bulunamadı.");
+                throw new NotFoundException("Kullanıcı bulunamadı.");
             }
             UserResponseDto response = ConvertToUserResponseDto(user);
             return response;

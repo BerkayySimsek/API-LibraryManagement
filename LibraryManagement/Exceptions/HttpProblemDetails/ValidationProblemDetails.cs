@@ -8,7 +8,7 @@ public class ValidationProblemDetails : ProblemDetails
     public ValidationProblemDetails(List<string> errors)
     {
         Title = "Validation Exception";
-        Status = StatusCodes.Status404NotFound;
+        Status = 400;
         Errors = errors;
     }
 }

@@ -33,15 +33,8 @@ public class UsersController : ControllerBase
     [HttpGet("getbyid")]
     public IActionResult GetById(string id)
     {
-        try
-        {
-            UserResponseDto userResponseDto = _userService.GetById(id);
-            return Ok(userResponseDto);
-        }
-        catch (NotFoundException ex)
-        {
-            return NotFound(ex.Message);
-        }   
+        UserResponseDto userResponseDto = _userService.GetById(id);
+        return Ok(userResponseDto);
     }
 
     [HttpGet("getall")]

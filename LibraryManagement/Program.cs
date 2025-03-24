@@ -1,6 +1,8 @@
 using LibraryManagement.DataAccess.Abstracts;
 using LibraryManagement.DataAccess.Concretes;
 using LibraryManagement.DataAccess.Contexts;
+using LibraryManagement.Exceptions;
+using LibraryManagement.Middlewares;
 using LibraryManagement.Services.Abstracts;
 using LibraryManagement.Services.BusinessRules;
 using LibraryManagement.Services.Concretes;
@@ -54,6 +56,8 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 //app.UseExceptionHandler(_ => { });
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.MapControllers();
 

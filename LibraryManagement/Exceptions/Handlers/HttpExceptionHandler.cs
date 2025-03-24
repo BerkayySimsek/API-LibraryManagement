@@ -6,7 +6,7 @@ namespace LibraryManagement.Exceptions.Handlers
 {
     public class HttpExceptionHandler : ExceptionHandler
     {
-        public HttpResponse Response { get; set; }
+
         protected override Task HandleException(NotFoundException notFoundException)
         {
             Response.StatusCode = 404;
