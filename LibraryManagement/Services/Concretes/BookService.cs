@@ -12,11 +12,13 @@ public class BookService : IBookService
 {
     private IBookRepository _bookRepository;
     private BookBusinessRules _bookBusinessRules;
+    private ICloudinaryService _cloudinaryService;
 
-    public BookService(IBookRepository bookRepository, BookBusinessRules bookBusinessRules)
+    public BookService(IBookRepository bookRepository, BookBusinessRules bookBusinessRules, ICloudinaryService cloudinaryService)
     {
         _bookRepository = bookRepository;
         _bookBusinessRules = bookBusinessRules;
+        _cloudinaryService = cloudinaryService;
     }
 
     public void Add(BookAddRequestDto dto)
@@ -26,7 +28,12 @@ public class BookService : IBookService
         _bookBusinessRules.TitleMustBeUnique(dto.Title);
         _bookBusinessRules.IsbnMustBeUnique(dto.Isbn);
 
+        string url = _cloudinaryService.UploadImage(dto.Image, "books");
+
         Book book = ConvertToTable(dto);
+
+        book.ImageUrl = url;
+
         _bookRepository.Add(book);
     }
 
@@ -79,6 +86,7 @@ public class BookService : IBookService
             Page = book.Page,
             Price = book.Price,
             Title = book.Title,
+            ImageUrl = book.ImageUrl
         };
         return dto;
     }

@@ -3,6 +3,7 @@ using LibraryManagement.DataAccess.Concretes;
 using LibraryManagement.DataAccess.Contexts;
 using LibraryManagement.Exceptions;
 using LibraryManagement.Middlewares;
+using LibraryManagement.Models;
 using LibraryManagement.Services.Abstracts;
 using LibraryManagement.Services.BusinessRules;
 using LibraryManagement.Services.Concretes;
@@ -25,6 +26,7 @@ builder.Services.AddSwaggerGen();
 // AddSingleton() : Uygulama ayakta olduðu sürece 1 tane nesne üretir.
 
 // AddTransient() : Her bir istek baþýna 1 tane nesne üretir.
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -39,6 +41,8 @@ builder.Services.AddScoped<IAuthorService, AuthorService>();
 
 builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<IBookService, BookService>();
+
+builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
 
 builder.Services.AddScoped<BookBusinessRules>();
 
